@@ -5,11 +5,14 @@ module.exports = {
   async getAllUsers(req, res) {
     try {
       const users = await User.find({
-        // populate: {
-        //     path: "friends",
-        //     select: "username"
-        // }
+        populate: {
+          path: "friends",
+          select: "username",
+        },
       });
+      if (!users) {
+        return res.status(400).json({ message: "Something went horribly wrong..." });
+      }
       res.status(200).json(users);
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -19,6 +22,11 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findById(req.params.userId);
+
+      if (!user) {
+        res.status(404).json({ message: "No user found." });
+      }
+
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -28,7 +36,12 @@ module.exports = {
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
-      res.status(201).json(user);
+
+      if (!user) {
+        res.status(400).json({ message: "User not created" });
+      }
+
+      res.status(201).json({message: "A new user has been created!"});
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -39,7 +52,12 @@ module.exports = {
       const user = await User.findByIdAndUpdate(req.params.userId, req.body, {
         new: true,
       });
-      res.status(200).json(user);
+
+      if (!user) {
+        res.status(400).json({ message: "Something went wrong." });
+      }
+
+      res.status(200).json({ message: "User updated!" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -47,8 +65,13 @@ module.exports = {
 
   async deleteUser(req, res) {
     try {
-      await User.findByIdAndDelete(req.params.userId);
-      res.status(204).end();
+      const user = await User.findByIdAndDelete(req.params.userId);
+      
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(200).json({ message: "User successfully deleted" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -66,7 +89,12 @@ module.exports = {
           friends: req.params.userId,
         },
       });
-      res.status(200).json(user);
+
+      if (!user || !friend) {
+        res.status(404).json({ message: "User not found.. try again." });
+      }
+
+      res.status(200).json({ message: 'Friendship has begun 😍' });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -84,7 +112,12 @@ module.exports = {
           friends: req.params.userId,
         },
       });
-      res.status(200).json(user);
+
+      if (!user || !friend) {
+        res.status(404).json({ message: "User not found.. try again." });
+      }
+
+      res.status(200).json({ message: 'Friendship terminated 😢' });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
