@@ -1,40 +1,33 @@
+const router = require("express").Router();
+const {
+  getAllUsers,
+  getSingleUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  addFriend,
+  deleteFriend,
+} = require("../../controllers/userControllers");
 
-const router = require('express').Router();
-const {User} = require("../../models")
+//ROUTE THAT GETS ALL THE USERS, include friends?
+router.route("/").get(getAllUsers);
 
-//TODO - ROUTE THAT GETS ALL THE USERS, include friends?
-router.get('/', (req,res)=> {
+//ROUTE THAT CREATES A NEW USER
+router.route("/").post(createUser);
 
-})
+//ROUTE THAT GETS A SINGLE USER BASED ON USER ID
+router.route("/:userId").get(getSingleUser);
 
-//TODO - ROUTE THAT CREATES A NEW USER
-router.post('/', (req,res)=> {
+//ROUTE THAT UPDATES A SINGLE USER
+router.route("/:userId").put(updateUser);
 
-});
+//ROUTE THAT DELETES A SINGLE USER BASED ON USER ID
+router.route('/:userId').delete(deleteUser);
 
-//TODO - ROUTE THAT GETS A SINGLE USER BASED ON USER ID
-router.get('/:userId', (req,res) => {
+//ROUTE THAT ADDS A FRIEND TO A USER
+router.route('/:userId/friends/:friendId').put(addFriend)
 
-})
-
-//TODO - ROUTE THAT UPDATES A SINGLE USER
-router.put('/:userId', (req,res)=> {
-
-})
-
-//TODO - ROUTE THAT DELETES A SINGLE USER BASED ON USER ID
-router.delete('/:userId', (req,res)=> {
-
-});
-
-//TODO - ROUTE THAT ADDS A FRIEND TO A USER
-router.put('/:userId/friends/:friendId', (req,res)=> {
-
-})
-
-//TODO - ROUTE THAT DELETES A FRIEND FROM A USER'S FRIENDS, DONT DELETE THE FRIEND AS A USER THOUGH!
-router.delete('/:userId/friends/:friendId', (req,res)=> {
-  
-});
+//ROUTE THAT DELETES A FRIEND FROM A USER'S FRIENDS, DONT DELETE THE FRIEND AS A USER THOUGH!
+router.route('/:userId/friends/:friendId').delete(deleteFriend)
 
 module.exports = router;
