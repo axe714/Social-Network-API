@@ -56,10 +56,10 @@ module.exports = {
       });
 
       if (!user) {
-        res.status(400).json({ message: "Something went wrong." });
+        res.status(400).json({ message: "Something went wrong. User was not updated." });
       }
 
-      res.status(200).json({ message: "User updated!" });
+      res.status(200).json({ message: "User successfully updated!" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
