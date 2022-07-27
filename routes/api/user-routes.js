@@ -9,25 +9,13 @@ const {
   deleteFriend,
 } = require("../../controllers/userControllers");
 
-//ROUTE THAT GETS ALL THE USERS, include friends?
-router.route("/").get(getAllUsers);
+//Get all users and create user
+router.route("/").get(getAllUsers).post(createUser);
 
-//ROUTE THAT CREATES A NEW USER
-router.route("/").post(createUser);
+//Get, update and delete single user
+router.route("/:userId").get(getSingleUser).put(updateUser).delete(deleteUser);
 
-//ROUTE THAT GETS A SINGLE USER BASED ON USER ID
-router.route("/:userId").get(getSingleUser);
-
-//ROUTE THAT UPDATES A SINGLE USER
-router.route("/:userId").put(updateUser);
-
-//ROUTE THAT DELETES A SINGLE USER BASED ON USER ID
-router.route('/:userId').delete(deleteUser);
-
-//ROUTE THAT ADDS A FRIEND TO A USER
-router.route('/:userId/friends/:friendId').put(addFriend)
-
-//ROUTE THAT DELETES A FRIEND FROM A USER'S FRIENDS, DONT DELETE THE FRIEND AS A USER THOUGH!
-router.route('/:userId/friends/:friendId').delete(deleteFriend)
+//Route for adding/deleting friend
+router.route("/:userId/friends/:friendId").put(addFriend).delete(deleteFriend);
 
 module.exports = router;

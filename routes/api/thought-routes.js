@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const { Thought, Reaction } = require("../../models");
+const { getAllThoughts } = require("../../controllers/thoughtControllers");
 
 //TODO: ROUTE TO GET ALL THOUGHTS
-router.get("/", (req, res) => {});
+router.route("/").get(getAllThoughts);
 
 //TODO: ROUTE TO CREATE A NEW THOUGHT
 router.post("/", (req, res) => {});
