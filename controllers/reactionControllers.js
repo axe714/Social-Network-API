@@ -1,4 +1,3 @@
-const { json } = require("express");
 const { Thought, Reaction } = require("../models");
 
 module.exports = {
@@ -13,12 +12,33 @@ module.exports = {
       });
 
       if (!thought || !reaction) {
-        res
-          .status(404)
-          .json({ message: "Something went wrong. Please try again." });
+        res.status(404).json({
+          message: "Unable to find thought or reaction. Please try again.",
+        });
       }
 
       res.status(200).json({ message: "Reaction successfully posted!" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+
+  async deleteReaction(req, res) {
+    try {
+      const reaction = await Reaction.findByIdAndDelete(req.params.reactionId);
+      const thought = await Thought.findOneAndUpdate(req.params.thoughtId, {
+        $pull: {
+          reactions: req.params.reactionId,
+        },
+      });
+
+      if (!thought || !reaction) {
+        res.status(404).json({
+          message: "Unable to find thought or reaction. Please try again.",
+        });
+      }
+
+      res.status(200).json({ message: "Reaction successfully deleted!" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
