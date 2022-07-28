@@ -23,10 +23,11 @@ router.route("/:thoughtId")
 .delete(deleteThought)
 .put(updateThought);
 
-//TODO: ROUTE TO ADD REACTION TO A THOUGHT
+//Post reaction route
 router.route("/:thoughtId/reactions")
 .post(createReaction)
-//TODO: ROUTE TO DELETE A REACTION ON A THOUGHT
+
+//Delete reaction route
 router.route("/:thoughtId/reactions/:reactionId").delete(deleteReaction)
 
 module.exports = router;

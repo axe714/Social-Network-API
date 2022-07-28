@@ -22,7 +22,7 @@ module.exports = {
       const thought = await Thought.findById(req.params.thoughtId);
 
       if (!thought) {
-        res.status(404).json({ message: "No thought found with this ID." });
+        return res.status(404).json({ message: "No thought found with this ID." });
       }
 
       res.status(200).json(thought);
@@ -34,16 +34,19 @@ module.exports = {
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
-      console.log(req.body.username);
+      // console.log(req.body.username);
 
-      const user = await User.findOneAndUpdate(req.body.username, {
-        $push: {
-          thoughts: thought,
-        },
-      });
+      const user = await User.findOneAndUpdate(
+        { username: req.body.username },
+        {
+          $push: {
+            thoughts: thought,
+          },
+        }
+      );
 
       if (!thought || !user) {
-        res
+        return res
           .status(404)
           .json({ message: "Something went wrong. Please try again." });
       }
@@ -59,7 +62,7 @@ module.exports = {
       const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
 
       if (!thought) {
-        res.status(404).json({ message: "Thought not found" });
+       return res.status(404).json({ message: "Thought not found" });
       }
 
       res.status(200).json({ message: "Thought successfully deleted" });
@@ -70,17 +73,23 @@ module.exports = {
 
   async updateThought(req, res) {
     try {
-        const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, {
+      const thought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        req.body,
+        {
           new: true,
-        });
-  
-        if (!thought) {
-          res.status(400).json({ message: "Something went wrong. Thought was not updated." });
         }
-  
-        res.status(200).json({ message: "Thought successfully updated!" });
-      } catch (err) {
-        res.status(500).json({ message: err.message });
+      );
+
+      if (!thought) {
+       return res
+          .status(400)
+          .json({ message: "Something went wrong. Thought was not updated." });
       }
-  }
+
+      res.status(200).json({ message: "Thought successfully updated!" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
 };

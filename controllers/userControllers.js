@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Thought } = require("../models");
 
 module.exports = {
   async getAllUsers(req, res) {
@@ -23,7 +23,6 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findById(req.params.userId);
-
       if (!user) {
         res.status(404).json({ message: "No user found." });
       }
@@ -66,11 +65,11 @@ module.exports = {
 
   async deleteUser(req, res) {
     try {
-      const user = await User.findByIdAndDelete(req.params.userId);
-
-      if (!user) {
-        res.status(404).json({ message: "User not found" });
-      }
+      const userInfo = await User.findById(req.params.userId)
+      const thought = await Thought.deleteMany({
+        username: userInfo.username
+      })
+      const deletedUser = await User.findByIdAndDelete(req.params.userId)
 
       res.status(200).json({ message: "User successfully deleted" });
     } catch (err) {

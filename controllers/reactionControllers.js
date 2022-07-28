@@ -5,14 +5,14 @@ module.exports = {
     try {
       const reaction = await Reaction.create(req.body);
 
-      const thought = await Thought.findOneAndUpdate(req.params.thoughtId, {
+      const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, {
         $push: {
           reactions: reaction,
         },
       });
 
       if (!thought || !reaction) {
-        res.status(404).json({
+        return res.status(404).json({
           message: "Unable to find thought or reaction. Please try again.",
         });
       }
@@ -26,14 +26,14 @@ module.exports = {
   async deleteReaction(req, res) {
     try {
       const reaction = await Reaction.findByIdAndDelete(req.params.reactionId);
-      const thought = await Thought.findOneAndUpdate(req.params.thoughtId, {
+      const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, {
         $pull: {
           reactions: req.params.reactionId,
         },
       });
 
       if (!thought || !reaction) {
-        res.status(404).json({
+        return res.status(404).json({
           message: "Unable to find thought or reaction. Please try again.",
         });
       }
