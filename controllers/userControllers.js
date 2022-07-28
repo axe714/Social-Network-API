@@ -9,6 +9,7 @@ module.exports = {
         //   select: "username",
         // },
       });
+      console.log(users)
       if (!users) {
         return res
           .status(400)
@@ -24,7 +25,7 @@ module.exports = {
     try {
       const user = await User.findById(req.params.userId);
       if (!user) {
-        res.status(404).json({ message: "No user found." });
+        return res.status(404).json({ message: "No user found." });
       }
 
       res.status(200).json(user);
@@ -38,7 +39,7 @@ module.exports = {
       const user = await User.create(req.body);
 
       if (!user) {
-        res.status(400).json({ message: "User not created" });
+        return res.status(400).json({ message: "User not created" });
       }
 
       res.status(201).json({ message: "A new user has been created!" });
@@ -54,7 +55,7 @@ module.exports = {
       });
 
       if (!user) {
-        res.status(400).json({ message: "Something went wrong. User was not updated." });
+       return res.status(400).json({ message: "Something went wrong. User was not updated." });
       }
 
       res.status(200).json({ message: "User successfully updated!" });
@@ -71,7 +72,7 @@ module.exports = {
       })
       const deletedUser = await User.findByIdAndDelete(req.params.userId)
 
-      res.status(200).json({ message: "User successfully deleted" });
+     return res.status(200).json({ message: "User successfully deleted" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -91,7 +92,7 @@ module.exports = {
       });
 
       if (!user || !friend) {
-        res.status(404).json({ message: "User not found.. try again." });
+       return res.status(404).json({ message: "User not found.. try again." });
       }
 
       res.status(200).json({ message: "Friendship has begun 😍" });
@@ -114,7 +115,7 @@ module.exports = {
       });
 
       if (!user || !friend) {
-        res.status(404).json({ message: "User not found.. try again." });
+       return res.status(404).json({ message: "User not found.. try again." });
       }
 
       res.status(200).json({ message: "Friendship terminated 😢" });
