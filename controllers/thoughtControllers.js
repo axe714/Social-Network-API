@@ -3,7 +3,9 @@ const { Thought, User } = require("../models");
 module.exports = {
   async getAllThoughts(req, res) {
     try {
-      const thoughts = await Thought.find();
+      const thoughts = await Thought.find().populate({
+        path: "reactions",
+      });
 
       if (!thoughts) {
         return res
@@ -19,7 +21,9 @@ module.exports = {
 
   async getSingleThought(req, res) {
     try {
-      const thought = await Thought.findById(req.params.thoughtId);
+      const thought = await Thought.findById(req.params.thoughtId).populate({
+        path: "reactions",
+      });
 
       if (!thought) {
         return res

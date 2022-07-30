@@ -3,9 +3,13 @@ const { User, Thought } = require("../models");
 module.exports = {
   async getAllUsers(req, res) {
     try {
-      const users = await User.find().populate({
-        path: "friends",
-      });
+      const users = await User.find()
+        .populate({
+          path: "friends",
+        })
+        .populate({
+          path: "thoughts",
+        });
       // console.log(users);
       if (!users) {
         return res
@@ -20,7 +24,13 @@ module.exports = {
 
   async getSingleUser(req, res) {
     try {
-      const user = await User.findById(req.params.userId);
+      const user = await User.findById(req.params.userId)
+        .populate({
+          path: "friends",
+        })
+        .populate({
+          path: "thoughts",
+        });
       if (!user) {
         return res.status(404).json({ message: "No user found." });
       }
