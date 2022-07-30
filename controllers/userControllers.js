@@ -3,13 +3,10 @@ const { User, Thought } = require("../models");
 module.exports = {
   async getAllUsers(req, res) {
     try {
-      const users = await User.find({
-        // populate: {
-        //   path: "friends",
-        //   select: "username",
-        // },
+      const users = await User.find().populate({
+        path: "friends",
       });
-      console.log(users)
+      // console.log(users);
       if (!users) {
         return res
           .status(400)
@@ -55,7 +52,9 @@ module.exports = {
       });
 
       if (!user) {
-       return res.status(400).json({ message: "Something went wrong. User was not updated." });
+        return res
+          .status(400)
+          .json({ message: "Something went wrong. User was not updated." });
       }
 
       res.status(200).json({ message: "User successfully updated!" });
@@ -66,13 +65,13 @@ module.exports = {
 
   async deleteUser(req, res) {
     try {
-      const userInfo = await User.findById(req.params.userId)
+      const userInfo = await User.findById(req.params.userId);
       const thought = await Thought.deleteMany({
-        username: userInfo.username
-      })
-      const deletedUser = await User.findByIdAndDelete(req.params.userId)
+        username: userInfo.username,
+      });
+      const deletedUser = await User.findByIdAndDelete(req.params.userId);
 
-     return res.status(200).json({ message: "User successfully deleted" });
+      return res.status(200).json({ message: "User successfully deleted" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -92,7 +91,7 @@ module.exports = {
       });
 
       if (!user || !friend) {
-       return res.status(404).json({ message: "User not found.. try again." });
+        return res.status(404).json({ message: "User not found.. try again." });
       }
 
       res.status(200).json({ message: "Friendship has begun 😍" });
@@ -115,7 +114,7 @@ module.exports = {
       });
 
       if (!user || !friend) {
-       return res.status(404).json({ message: "User not found.. try again." });
+        return res.status(404).json({ message: "User not found.. try again." });
       }
 
       res.status(200).json({ message: "Friendship terminated 😢" });
