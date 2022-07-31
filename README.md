@@ -2,7 +2,7 @@
 
 ![MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-![Pending](#)
+[![Social Network API Demo](./assets/images/demo.png)](https://www.youtube.com/watch?v=-29yuKXv-JM)
 
 ## Description 📍
 - A mockup of the backend of a social media application utilizing Node.js, Express, MongoDB and Mongoose.
@@ -23,7 +23,7 @@
  4. Run ```npm run start``` in the terminal to start the server.
 
 ## Youtube 
-- [Pending](#)
+- [Youtube Walk Through](https://youtu.be/-29yuKXv-JM)
 
 ## Usage 
 - As mentioned above, this application is solely the backend of a social media app. To use this application, you must have a REST client (ex: Insomnia) in order to test the routes. 
